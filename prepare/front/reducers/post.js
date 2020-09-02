@@ -28,7 +28,7 @@ export const initialState = {
         },
         {
           User: {
-            nickname: "44",
+            nickname: "정현정",
           },
           content: "이쁘시네요",
         },
@@ -46,7 +46,7 @@ export const addPost = {
 const dummyPost = {
   id: 2,
   content: "헤헤",
-  user: {
+  User: {
     id: 1,
     nickname: "최원석",
   },
