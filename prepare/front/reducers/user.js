@@ -5,9 +5,12 @@ export const initialState = {
   logOutLoading: false, // 로그아웃 시도 중
   logOutDone: false,
   logOutError: null,
-  signUpLoading: false, // 로그아웃 시도 중
+  signUpLoading: false, // 회원가입 시도 중
   signUpDone: false,
-  signUpFailure: false,
+  signUpError: null,
+  changeNicknameLoading: false, // 닉네임 변경 시도 중
+  changeNicknameDone: false,
+  changeNicknameError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -25,6 +28,10 @@ export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
 export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
 
+export const CHANGE_NICKNAME_REQUEST = "CHANGE_NICKNAME_REQUEST";
+export const CHANGE_NICKNAME_SUCCESS = "CHANGE_NICKNAME_SUCCESS";
+export const CHANGE_NICKNAME_FAILURE = "CHANGE_NICKNAME_FAILURE";
+
 export const FOLLOW_REQUEST = "FOLLOW_REQUEST";
 export const FOLLOW_SUCCESS = "FOLLOW_SUCCESS";
 export const FOLLOW_FAILURE = "FOLLOW_FAILURE";
@@ -35,7 +42,8 @@ export const UNFOLLOW_FAILURE = "UNFOLLOW_FAILURE";
 
 const dummyUser = (data) => ({
   ...data,
-  nickname: "갓현정",
+  nickname: "최원석",
+  id: 1,
   Posts: [],
   Followings: [],
   Followers: [],
@@ -127,6 +135,29 @@ const reducer = (state = initialState, action) => {
         ...state,
         signUpLoading: false,
         signUpError: action.error,
+      };
+
+    // 닉네임 변경
+    case CHANGE_NICKNAME_REQUEST:
+      return {
+        ...state,
+        changeNicknameLoading: true,
+        changeNicknameDone: false,
+        changeNicknameError: true,
+      };
+
+    case CHANGE_NICKNAME_SUCCESS:
+      return {
+        ...state,
+        changeNicknameLoading: false,
+        changeNicknameDone: true,
+      };
+
+    case CHANGE_NICKNAME_FAILURE:
+      return {
+        ...state,
+        changeNicknameLoading: false,
+        changeNicknameError: action.error,
       };
 
     default:
