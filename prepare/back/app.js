@@ -1,9 +1,15 @@
 const express = require("express");
 const cors = require("cors");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+
 const postRouter = require("./routes/post");
 const userRouter = require("./routes/user");
 const db = require("./models");
 const app = express();
+const passportConfig = require("./passport");
+
+passportConfig();
 
 db.sequelize
   .sync()
@@ -20,6 +26,10 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // app.get -> 가져오기
 // app.post -> 생성

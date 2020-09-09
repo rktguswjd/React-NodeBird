@@ -59,17 +59,16 @@ function* unfollow(action) {
 }
 
 function logInAPI(data) {
-  return axios.post("api/login", data);
+  return axios.post("/user/login", data);
 }
 
 function* logIn(action) {
   try {
-    console.log("saga login");
-    // const result = yield call(logInAPI, action.data);
-    yield delay(1000);
+    const result = yield call(logInAPI, action.data);
+
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
@@ -80,7 +79,7 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post("api/logout");
+  return axios.post("/user/logout");
 }
 
 function* logOut() {
@@ -99,7 +98,7 @@ function* logOut() {
 }
 
 function signUpAPI(data) {
-  return axios.post("http://127.0.0.1:3065/user", data);
+  return axios.post("/user", data);
 }
 
 function* signUp(action) {
