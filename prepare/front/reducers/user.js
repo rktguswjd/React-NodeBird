@@ -89,7 +89,7 @@ const reducer = (state = initialState, action) => {
       case FOLLOW_REQUEST:
         draft.followLoading = true;
         draft.followDone = false;
-        draft.followError = true;
+        draft.followError = null;
         break;
 
       case FOLLOW_SUCCESS:
@@ -107,7 +107,7 @@ const reducer = (state = initialState, action) => {
       case UNFOLLOW_REQUEST:
         draft.unfollowLoading = true;
         draft.unfollowDone = false;
-        draft.unfollowError = true;
+        draft.unfollowError = null;
         break;
 
       case UNFOLLOW_SUCCESS:
@@ -145,7 +145,7 @@ const reducer = (state = initialState, action) => {
       case LOG_OUT_REQUEST:
         draft.logOutLoading = true;
         draft.logOutDone = false;
-        draft.logOutError = true;
+        draft.logOutError = null;
         break;
 
       case LOG_OUT_SUCCESS:
@@ -163,7 +163,7 @@ const reducer = (state = initialState, action) => {
       case SIGN_UP_REQUEST:
         draft.signUpLoading = true;
         draft.signUpDone = false;
-        draft.signUpError = true;
+        draft.signUpError = null;
         break;
 
       case SIGN_UP_SUCCESS:
@@ -180,7 +180,7 @@ const reducer = (state = initialState, action) => {
       case CHANGE_NICKNAME_REQUEST:
         draft.changeNicknameLoading = true;
         draft.changeNicknameDone = false;
-        draft.changeNicknameError = true;
+        draft.changeNicknameError = null;
         break;
 
       case CHANGE_NICKNAME_SUCCESS:
