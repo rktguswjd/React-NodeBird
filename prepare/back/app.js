@@ -24,8 +24,8 @@ db.sequelize
 
 app.use(
   cors({
-    origin: "*",
-    credentials: false,
+    origin: "http://localhost:3060",
+    credentials: true,
   })
 );
 app.use(express.json());
@@ -51,10 +51,6 @@ app.use(passport.session());
 
 app.get("/", (req, res) => {
   res.send("hello express");
-});
-
-app.get("/", (req, res) => {
-  res.send("hello api");
 });
 
 app.get("/posts", (req, res) => {

@@ -1,6 +1,9 @@
 import produce from "immer";
 
 export const initialState = {
+  loadUserLoading: false, // 유저 정보 가져오기 시도 중
+  loadUserDone: false,
+  loadUserError: null,
   followLoading: false, // 팔로우 시도 중
   followDone: false,
   followError: null,
@@ -23,6 +26,10 @@ export const initialState = {
   signUpData: {},
   loginData: {},
 };
+
+export const LOAD_MY_INFO_REQUEST = "LOAD_MY_INFO_REQUEST";
+export const LOAD_MY_INFO_SUCCESS = "LOAD_MY_INFO_SUCCESS";
+export const LOAD_MY_INFO_FAILURE = "LOAD_MY_INFO_FAILURE";
 
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
@@ -85,6 +92,24 @@ export const logoutRequestAction = (data) => {
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      // 유저 정보 가져오기
+      case LOAD_MY_INFO_REQUEST:
+        draft.loadUserLoading = true;
+        draft.loadUserDone = false;
+        draft.loadUserError = null;
+        break;
+
+      case LOAD_MY_INFO_SUCCESS:
+        draft.loadUserLoading = false;
+        draft.me = action.data;
+        draft.loadUserDone = true;
+        break;
+
+      case LOAD_MY_INFO_FAILURE:
+        draft.loadUserLoading = false;
+        draft.loadUserError = action.error;
+        break;
+
       // 팔로우
       case FOLLOW_REQUEST:
         draft.followLoading = true;
@@ -94,8 +119,8 @@ const reducer = (state = initialState, action) => {
 
       case FOLLOW_SUCCESS:
         draft.followLoading = false;
-        draft.me.Followings.push({ id: action.data }),
-          (draft.followDone = true);
+        draft.me.Followings.push({ id: action.data });
+        draft.followDone = true;
         break;
 
       case FOLLOW_FAILURE:

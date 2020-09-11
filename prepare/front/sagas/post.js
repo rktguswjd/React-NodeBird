@@ -5,6 +5,7 @@ import {
   takeLatest,
   delay,
   throttle,
+  call,
 } from "redux-saga/effects";
 import axios from "axios";
 import {
@@ -47,24 +48,19 @@ function* loadPosts(action) {
 }
 
 function addPostAPI(data) {
-  return axios.post("api/post", data);
+  return axios.post("/post", { content: data });
 }
 
 function* addPost(action) {
   try {
-    // const result = yield call(addPostAPI, action.data);
-    yield delay(1000);
-    const id = shortid.generate();
+    const result = yield call(addPostAPI, action.data);
     yield put({
       type: ADD_POST_SUCCESS,
-      data: {
-        id,
-        content: action.data,
-      },
+      data: result.data,
     });
     yield put({
       type: ADD_POST_TO_ME,
-      data: id,
+      data: result.data.id,
     });
   } catch (err) {
     yield put({
@@ -99,16 +95,15 @@ function* removePost(action) {
 }
 
 function addCommentAPI(data) {
-  return axios.Comment(`api/post/${data.postId}/comment`, data);
+  return axios.Comment(`/post/${data.postId}/comment`, data); // POST /post/1/comment
 }
 
 function* addComment(action) {
   try {
-    // const result = yield call(addCommentAPI, action.data);
-    yield delay(1000);
+    const result = yield call(addCommentAPI, action.data);
     yield put({
       type: ADD_COMMENT_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
