@@ -19,6 +19,12 @@ export const initialState = {
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
+  unlikePostLoading: false,
+  unlikePostDone: false,
+  unlikePostError: null,
 };
 
 export const generateDummyPost = (number) =>
@@ -46,6 +52,14 @@ export const generateDummyPost = (number) =>
         },
       ],
     }));
+
+export const LIKE_POST_REQUEST = "LIKE_POST_REQUEST";
+export const LIKE_POST_SUCCESS = "LIKE_POST_SUCCESS";
+export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE";
+
+export const UNLIKE_POST_REQUEST = "UNLIKE_POST_REQUEST";
+export const UNLIKE_POST_SUCCESS = "UNLIKE_POST_SUCCESS";
+export const UNLIKE_POST_FAILURE = "UNLIKE_POST_FAILURE";
 
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
@@ -78,6 +92,44 @@ const reducer = (state = initialState, action) => {
   // immer : 불변성을 관리할 수 있게 해주는 패키지
   return produce(state, (draft) => {
     switch (action.type) {
+      // 좋아요
+      case LIKE_POST_REQUEST:
+        draft.likePostLoading = true;
+        draft.likePostDone = false;
+        draft.likePostError = null;
+        break;
+
+      case LIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+        post.Likers.push({ id: action.data.UserId });
+        draft.likePostLoading = false;
+        draft.likePostDone = true;
+        break;
+      }
+      case LIKE_POST_FAILURE:
+        draft.unlikePostLoading = false;
+        draft.unlikePostError = action.error;
+        break;
+
+      // 좋아요 x
+      case UNLIKE_POST_REQUEST:
+        draft.unlikePostLoading = true;
+        draft.unlikePostDone = false;
+        draft.unlikePostError = null;
+        break;
+
+      case UNLIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+        post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId);
+        draft.unlikePostLoading = false;
+        draft.unlikePostDone = true;
+        break;
+      }
+      case UNLIKE_POST_FAILURE:
+        draft.unlikePostLoading = false;
+        draft.unlikePostError = action.error;
+        break;
+
       // 데이터
       case LOAD_POSTS_REQUEST:
         draft.loadPostsLoading = true;
@@ -125,12 +177,15 @@ const reducer = (state = initialState, action) => {
       case REMOVE_POST_SUCCESS:
         draft.removePostLoading = false;
         draft.removePostDone = true;
-        draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data);
+        draft.mainPosts = draft.mainPosts.filter(
+          (v) => v.id !== action.data.PostId
+        );
         break;
 
       case REMOVE_POST_FAILURE:
         draft.removePostLoading = false;
         draft.removePostError = action.error;
+        break;
 
       // 댓글작성
       case ADD_COMMENT_REQUEST:
