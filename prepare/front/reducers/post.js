@@ -84,6 +84,8 @@ export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
 
+export const REMOVE_IMAGE = "REMOVE_IMAGE";
+
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
   data,
@@ -99,6 +101,11 @@ const reducer = (state = initialState, action) => {
   // immer : 불변성을 관리할 수 있게 해주는 패키지
   return produce(state, (draft) => {
     switch (action.type) {
+      // 이미지 제거 (동기액션)
+      case REMOVE_IMAGE:
+        draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
+        break;
+
       // 이미지 업로드
       case UPLOAD_IMAGES_REQUEST:
         draft.uploadImagesLoading = true;
@@ -185,6 +192,7 @@ const reducer = (state = initialState, action) => {
         draft.addPostLoading = false;
         draft.addPostDone = true;
         draft.mainPosts.unshift(action.data);
+        draft.imagePaths = [];
         break;
 
       case ADD_POST_FAILURE:
