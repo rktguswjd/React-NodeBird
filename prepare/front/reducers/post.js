@@ -25,6 +25,9 @@ export const initialState = {
   unlikePostLoading: false,
   unlikePostDone: false,
   unlikePostError: null,
+  uploadImagesLoading: false,
+  uploadImagesDone: false,
+  uploadImagesError: null,
 };
 
 export const generateDummyPost = (number) =>
@@ -52,6 +55,10 @@ export const generateDummyPost = (number) =>
         },
       ],
     }));
+
+export const UPLOAD_IMAGES_REQUEST = "UPLOAD_IMAGES_REQUEST";
+export const UPLOAD_IMAGES_SUCCESS = "UPLOAD_IMAGES_SUCCESS";
+export const UPLOAD_IMAGES_FAILURE = "UPLOAD_IMAGES_FAILURE";
 
 export const LIKE_POST_REQUEST = "LIKE_POST_REQUEST";
 export const LIKE_POST_SUCCESS = "LIKE_POST_SUCCESS";
@@ -92,6 +99,24 @@ const reducer = (state = initialState, action) => {
   // immer : 불변성을 관리할 수 있게 해주는 패키지
   return produce(state, (draft) => {
     switch (action.type) {
+      // 이미지 업로드
+      case UPLOAD_IMAGES_REQUEST:
+        draft.uploadImagesLoading = true;
+        draft.uploadImagesDone = false;
+        draft.uploadImagesError = null;
+        break;
+
+      case UPLOAD_IMAGES_SUCCESS: {
+        draft.imagePaths = action.data;
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesDone = true;
+        break;
+      }
+      case UPLOAD_IMAGES_FAILURE:
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesError = action.error;
+        break;
+
       // 좋아요
       case LIKE_POST_REQUEST:
         draft.likePostLoading = true;
@@ -107,8 +132,8 @@ const reducer = (state = initialState, action) => {
         break;
       }
       case LIKE_POST_FAILURE:
-        draft.unlikePostLoading = false;
-        draft.unlikePostError = action.error;
+        draft.likePostLoading = false;
+        draft.likePostError = action.error;
         break;
 
       // 좋아요 x
