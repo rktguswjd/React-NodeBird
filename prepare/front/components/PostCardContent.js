@@ -8,7 +8,7 @@ const PostCardContent = ({ postData }) => {
       {postData.split(/(#[^\s#]+)/g).map((v, i) => {
         if (v.match(/(#[^\s#]+)/)) {
           return (
-            <Link href={`/hashtab/${v.slice(1)}`} key={i}>
+            <Link href={`/hashtag/${v.slice(1)}`} key={i}>
               <a>{v}</a>
             </Link>
           );
