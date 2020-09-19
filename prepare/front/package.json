@@ -5,18 +5,20 @@
   "main": "index.js",
   "scripts": {
     "dev": "next -p 3060",
-    "build": "next build",
-    "start": "next start"
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build"
   },
   "author": "rktguswjd",
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@next/bundle-analyzer": "^9.5.3",
     "antd": "^4.6.1",
     "axios": "^0.20.0",
     "babel-plugin-styled-components": "^1.11.1",
+    "cross-env": "^7.0.2",
     "faker": "^5.1.0",
     "immer": "^7.0.8",
+    "moment": "^2.28.0",
     "next": "^9.5.2",
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.7.2",

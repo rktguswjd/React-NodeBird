@@ -21,6 +21,9 @@ import {
   UNLIKE_POST_REQUEST,
   RETWEET_REQUEST,
 } from "../reducers/post";
+import moment from "moment";
+
+moment.locale("ko");
 
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
@@ -127,6 +130,9 @@ const PostCard = ({ post }) => {
               )
             }
           >
+            <span style={{ float: "right" }}>
+              {moment(post.createdAt).format("YYYY.MM.DD.")}
+            </span>
             <Card.Meta
               avatar={
                 <Link href={`/user/${post.Retweet.User.id}`}>
@@ -138,15 +144,20 @@ const PostCard = ({ post }) => {
             />
           </Card>
         ) : (
-          <Card.Meta
-            avatar={
-              <Link href={`/user/${post.User.id}`}>
-                <Avatar>{post.User.nickname[0]}</Avatar>
-              </Link>
-            }
-            title={post.User.nickname}
-            description={<PostCardContent postData={post.content} />}
-          />
+          <>
+            <span style={{ float: "right" }}>
+              {moment(post.createdAt).format("YYYY.MM.DD.")}
+            </span>
+            <Card.Meta
+              avatar={
+                <Link href={`/user/${post.User.id}`}>
+                  <Avatar>{post.User.nickname[0]}</Avatar>
+                </Link>
+              }
+              title={post.User.nickname}
+              description={<PostCardContent postData={post.content} />}
+            />
+          </>
         )}
       </Card>
       {commentFormOpened && (
